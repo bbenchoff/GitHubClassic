@@ -1,0 +1,1 @@
+/* No claim that ticks, addresses, or mouse coordinates are a strong RNG.   The application explicitly supplies a one-shot CSPRNG seed to MacSSL. */#include "entropy_poll.h"int mbedtls_hardware_poll(void *context,unsigned char *output,size_t size,size_t *olen) {    (void)context; (void)output; (void)size; if(olen) *olen=0; return -1;}

@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'none'; base-uri 'none'; form-action 'none'">
+<title>GitHub Classic — Network Setup</title>
+<style>
+  * { box-sizing:border-box }
+  body { margin:0; padding:48px 20px; background:#e6e2e9; color:#19151d; font:16px/1.5 system-ui,sans-serif }
+  main { max-width:640px; margin:auto; background:white; border:1px solid #554e5c; box-shadow:5px 5px 0 #a39aa9 }
+  header { padding:24px 32px; background:#f4f0f8; border-bottom:1px solid #8a7c94 }
+  header p { margin:0; color:#66596d; font-size:14px }
+  h1 { color:#502868; margin:0 0 4px; font-size:27px; line-height:1.25 }
+  section { padding:24px 32px 28px }
+  h2 { margin:0 0 12px; font-size:21px }
+  p { margin:0 0 18px }
+  ol { padding-left:24px; margin:0 0 24px }
+  li { margin:0 0 10px; padding-left:4px }
+  button { border:1px solid #163c7f; border-radius:4px; padding:11px 20px; background:#2768d0; color:white; font:600 16px system-ui,sans-serif; cursor:pointer }
+  button:focus-visible { outline:3px solid #7559ad; outline-offset:4px }
+  button:disabled { opacity:.6; cursor:wait }
+  #status { min-height:48px; margin:16px 0 0; color:#502868; overflow-wrap:anywhere }
+  aside { border-top:1px solid #d8d1df; padding-top:18px; color:#5d5363; font-size:14px }
+  @media(max-width:460px) { body { padding:24px 12px } header,section { padding:20px } button { width:100% } }
+</style>
+<main>
+  <header><h1>GitHub Classic</h1><p>Secure networking for your Macintosh.</p></header>
+  <section>
+    <h2>Prepare a one-time setup file</h2>
+    <p>Open this page on your modern computer. It works offline and creates the file locally using your browser’s cryptographic random source.</p>
+    <ol>
+      <li>Create a new setup file below.</li>
+      <li>Transfer the <strong>.ghsetup</strong> file to your Macintosh. Use binary transfer so its contents stay intact.</li>
+      <li>In GitHub Classic, start signing in or testing the connection. In <strong>Set Up Secure Networking</strong>, choose this file.</li>
+    </ol>
+    <button id="create" type="button">Create Setup File</button>
+    <p id="status" role="status" aria-live="polite"></p>
+    <aside>Use a newly generated file for each Macintosh or fresh installation. Delete the modern-computer copy after transfer. GitHub Classic consumes the Mac copy once and protects subsequent network state with your local vault passphrase.</aside>
+  </section>
+</main>
+<script>
+(() => {
+  'use strict';
+  const button=document.getElementById('create');
+  const status=document.getElementById('status');
+  let sequence=0;
+  button.addEventListener('click',() => {
+    const bytes=new Uint8Array(64);
+    let link=null,url=null;
+    button.disabled=true;
+    try {
+      if(!globalThis.crypto || typeof crypto.getRandomValues!=='function')throw new Error('No cryptographic random source');
+      crypto.getRandomValues(bytes);
+      if(!bytes.some(value=>value!==0))throw new Error('Empty setup input');
+      const blob=new Blob([bytes],{type:'application/octet-stream'});
+      const name='GH Setup '+Date.now().toString(36)+'-'+(++sequence).toString(36)+'.ghsetup';
+      url=URL.createObjectURL(blob);
+      link=document.createElement('a');link.href=url;link.download=name;link.hidden=true;
+      document.body.appendChild(link);link.click();
+      status.textContent='Setup file requested: '+name+'. Transfer it to your Macintosh, then choose it in GitHub Classic.';
+    } catch(error) {
+      status.textContent='The setup file could not be created. Try a current browser with cryptographic random generation enabled.';
+    } finally {
+      bytes.fill(0);
+      if(link)link.remove();
+      if(url)setTimeout(()=>URL.revokeObjectURL(url),1000);
+      button.disabled=false;
+    }
+  });
+})();
+</script>
+</html>

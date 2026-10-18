@@ -1,0 +1,1 @@
+/* GHClient public registration, supplied by its owner; Device Flow enabled.   This is an application identifier, never a token or client secret. */#ifndef GH_OAUTH_CONFIG_H#define GH_OAUTH_CONFIG_H#define GH_OAUTH_CLIENT_ID "Ov23li4S4o2D9HSZJJza"#endif

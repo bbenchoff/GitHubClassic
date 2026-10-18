@@ -1,0 +1,11 @@
+* Data/
+*.xSYM
+*.SYM
+*.MAP
+*.xMAP
+Desktop DB
+Desktop DF
+SSL Seed
+*.ghsetup
+GHClient Log
+TLS Probe.txt

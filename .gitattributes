@@ -1,2 +1,8 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+SRC/** -text
+*.rsrc -text
+*.mcp -text
+Output/** -text
+.ghclient-mac/** -text
+README.md text eol=lf
+LICENSES.txt text eol=lf
+.gitignore text eol=lf
