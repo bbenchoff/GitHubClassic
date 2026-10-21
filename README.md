@@ -47,10 +47,26 @@ SRC/LICENSES.txt and the source headers.
 [Download Classic Github 0.1](Output/GitHubClassic-0.1.sit) and expand the
 archive on your Macintosh. Keep the application and login helper together.
 
-On a modern computer, open SRC/Create Network Setup.html and generate a
-fresh .ghsetup file. Transfer it to the Mac in binary mode and select it in
-the app's secure networking setup dialog. Choose a local vault passphrase,
-then approve GitHub Device Flow on a phone or modern computer.
+On first launch, Classic Github prepares secure networking on the Macintosh.
+Move the pointer around the setup window and type random keys until
+Continue becomes available. Collection requires varied activity from both
+the pointer and keyboard; leaving the window idle does not collect randomness.
+Choose a local vault passphrase, then approve GitHub Device Flow on a phone
+or modern computer. No browser is needed on the Macintosh.
+
+The initial seed is conditioned from active user input in memory, then saved
+as encrypted network state. Existing installations reuse their saved state.
+The collector relies on an unpredictable operator and input-timing variation;
+its activity checks are not a measurement or certification of min-entropy.
+QEMU verifies the workflow; physical Macintosh timing validation remains open.
+
+For managed provisioning, Import Setup File accepts a fresh 64-byte .ghsetup
+file. SRC/Create Network Setup.html remains an optional offline generator for
+modern computers. Generate a separate file for each Macintosh and transfer
+it in binary mode. Never distribute a shared setup seed or a pre-created vault.
+
+An installer needs the FAT Classic Github application and GHClient Login
+Helper in the same folder, plus the Read Me and SRC/LICENSES.txt notices.
 
 ## GitHub authorization
 
