@@ -3,7 +3,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'none'; base-uri 'none'; form-action 'none'">
-<title>GitHub Classic — Network Setup</title>
+<title>Classic Github — Network Setup</title>
 <style>
   * { box-sizing:border-box }
   body { margin:0; padding:48px 20px; background:#e6e2e9; color:#19151d; font:16px/1.5 system-ui,sans-serif }
@@ -24,18 +24,18 @@
   @media(max-width:460px) { body { padding:24px 12px } header,section { padding:20px } button { width:100% } }
 </style>
 <main>
-  <header><h1>GitHub Classic</h1><p>Secure networking for your Macintosh.</p></header>
+  <header><h1>Classic Github</h1><p>Secure networking for your Macintosh.</p></header>
   <section>
     <h2>Prepare a one-time setup file</h2>
     <p>Open this page on your modern computer. It works offline and creates the file locally using your browser’s cryptographic random source.</p>
     <ol>
       <li>Create a new setup file below.</li>
       <li>Transfer the <strong>.ghsetup</strong> file to your Macintosh. Use binary transfer so its contents stay intact.</li>
-      <li>In GitHub Classic, start signing in or testing the connection. In <strong>Set Up Secure Networking</strong>, choose this file.</li>
+      <li>In Classic Github, start signing in or testing the connection. In <strong>Set Up Secure Networking</strong>, choose this file.</li>
     </ol>
     <button id="create" type="button">Create Setup File</button>
     <p id="status" role="status" aria-live="polite"></p>
-    <aside>Use a newly generated file for each Macintosh or fresh installation. Delete the modern-computer copy after transfer. GitHub Classic consumes the Mac copy once and protects subsequent network state with your local vault passphrase.</aside>
+    <aside>Use a newly generated file for each Macintosh or fresh installation. Delete the modern-computer copy after transfer. Classic Github consumes the Mac copy once and protects subsequent network state with your local vault passphrase.</aside>
   </section>
 </main>
 <script>
@@ -57,7 +57,7 @@
       url=URL.createObjectURL(blob);
       link=document.createElement('a');link.href=url;link.download=name;link.hidden=true;
       document.body.appendChild(link);link.click();
-      status.textContent='Setup file requested: '+name+'. Transfer it to your Macintosh, then choose it in GitHub Classic.';
+      status.textContent='Setup file requested: '+name+'. Transfer it to your Macintosh, then choose it in Classic Github.';
     } catch(error) {
       status.textContent='The setup file could not be created. Try a current browser with cryptographic random generation enabled.';
     } finally {
