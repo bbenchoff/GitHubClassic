@@ -47,12 +47,24 @@ SRC/LICENSES.txt and the source headers.
 [Download Classic Github 0.1](Output/GitHubClassic-0.1.sit) and expand the
 archive on your Macintosh. Keep the application and login helper together.
 
-On first launch, Classic Github prepares secure networking on the Macintosh.
-Move the pointer around the setup window and type random keys until
-Continue becomes available. Collection requires varied activity from both
-the pointer and keyboard; leaving the window idle does not collect randomness.
-Choose a local vault passphrase, then approve GitHub Device Flow on a phone
-or modern computer. No browser is needed on the Macintosh.
+1. Choose **Help > Secure Networking Setup...**. On a fresh installation, the
+   Set Up Secure Networking window opens. Existing setup is reused; the command
+   shows Secure Networking Ready when it is ready for this session.
+2. Smash the keyboard and move the mouse **inside the setup window**. Use
+   different keys and vary your direction and pace. Allow at least 30 seconds;
+   Continue stays disabled until enough varied activity has been collected.
+3. Click **Continue**, then choose and confirm a local vault passphrase. This
+   protects the network state and any saved login. It is separate from your
+   GitHub password. Creating or unlocking the vault can take a while.
+4. Choose **Help > Test GitHub Connection** to check Internet access and verified
+   HTTPS. Setup itself runs locally and does not contact GitHub.
+5. Open **File > Preferences** to sign in. Approve GitHub Device Flow on a phone
+   or modern computer. No browser is needed on the Macintosh.
+
+You can return to Secure Networking Setup at any time. An existing setup does
+not require collecting input again; a locked vault may ask for its local
+passphrase. Signing in also opens setup automatically if needed. The built-in
+Help > Classic Github Guide includes these setup steps.
 
 The initial seed is conditioned from active user input in memory, then saved
 as encrypted network state. Existing installations reuse their saved state.

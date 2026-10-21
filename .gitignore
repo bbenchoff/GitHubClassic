@@ -9,3 +9,4 @@ SSL Seed
 *.ghsetup
 GHClient Log
 TLS Probe.txt
+Auth Probe.txt
