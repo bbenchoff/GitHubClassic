@@ -36,9 +36,10 @@ Designed for 640x480, with monochrome cues and color on capable displays.
 History is first-parent, staging is whole-file and rebase is linear.
 Transfers select one branch; submodule checkout is not supported.
 Push prepares its pack on disk and uploads in 16 KiB chunks.
-Limits: 32 MiB per outgoing pack and 2 MiB per Git object.
-Fetch and Clone responses are currently buffered, with a 16 MiB body limit
-and 32 MiB expanded-pack limit. The application requests 64 MiB preferred
+Limits: 128 MiB per on-disk outgoing pack, 256 MiB of history read while
+preparing Push, and 2 MiB per Git object.
+Fetch and Clone responses are currently buffered, with a 64 MiB body limit
+and 64 MiB expanded-pack limit. The application requests 192 MiB preferred
 memory (8 MiB minimum); larger repositories need the preferred allocation.
 Quit the application before changing its Memory settings in Finder Get Info.
 Active Fetch/Clone downloads have a ten-minute total allowance and show bytes
