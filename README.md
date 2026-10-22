@@ -37,14 +37,20 @@ History is first-parent, staging is whole-file and rebase is linear.
 Transfers select one branch; submodule checkout is not supported.
 Push prepares its pack on disk and uploads in 16 KiB chunks.
 Limits: 32 MiB per outgoing pack and 2 MiB per Git object.
-Fetch and Clone responses are currently buffered, with a 4 MiB limit.
+Fetch and Clone responses are currently buffered, with a 16 MiB body limit
+and 32 MiB expanded-pack limit. The application requests 64 MiB preferred
+memory (8 MiB minimum); larger repositories need the preferred allocation.
+Quit the application before changing its Memory settings in Finder Get Info.
+Active Fetch/Clone downloads have a ten-minute total allowance and show bytes
+received; stalled TLS I/O still times out after two minutes without progress.
 
 Independent software. Third-party copyright and license notices are in
 SRC/LICENSES.txt and the source headers.
 
 ## First launch
 
-[Download Classic Github 0.1](Output/GitHubClassic-0.1.sit) and expand the
+[Download the installer](Install%20Github%20Classic.sit), or
+[download the application archive](Output/GitHubClassic-0.1.sit). Expand the
 archive on your Macintosh. Keep the application and login helper together.
 
 1. Choose **Help > Secure Networking Setup...**. On a fresh installation, the
@@ -95,3 +101,12 @@ Changing that display information does not require replacing the public Client I
 
 Advanced token sign-in uses the permissions of the token supplied by its user.
 A token restricted to another repository cannot grant access to this one.
+
+## Installer sources
+
+SRC/Installer contains the Installer VISE 6 project, color and monochrome PICT
+artwork, an editable artwork resource file, and the native Read Me. The VISE
+project archives the application, login helper, Read Me and license notices.
+Refresh its sources from the current Output and SRC folders before building.
+The installer is in Output/Installer. Its downloadable StuffIt archive,
+Install Github Classic.sit, is at the repository root.
