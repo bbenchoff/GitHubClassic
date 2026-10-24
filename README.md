@@ -77,14 +77,10 @@ interoperability is through Git objects and the wire protocol. See
 
 ## Install
 
-[Download version 0.2](Output/GitHubClassic-0.2.sit), a StuffIt archive of
-the application, helper and instructions. Get it onto your
+[Download the version 0.2 installer](Install%20Github%20Classic.sit), or the bare
+[application archive](Output/GitHubClassic-0.2.sit). Get it onto your
 Macintosh and expand it there. Keep **Classic Github** and **GHClient Login
 Helper** in the same folder.
-
-The root installer archive and `Output/Installer` still contain the older
-0.1 release. The updated 0.2 VISE project is included in `SRC/Installer`, but
-requires a licensed builder before a new installer can be distributed.
 
 <p align="center">
   <img src="docs/Installer1.png" alt="Installer VISE splash screen: Your code. Your Macintosh." width="540">

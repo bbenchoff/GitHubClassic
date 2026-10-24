@@ -23,10 +23,10 @@ remains compatible. New functionality does not add an automatic migration or
 rewrite older commits. Downgrading a 0.2 working repository to 0.1 is not part
 of release validation; use a separate clone to test an older application.
 
-Download `Output/GitHubClassic-0.2.sit` for this release. The refreshed VISE
-project and artwork are included, but a licensed builder is required for a
-redistributable installer. The root installer archive and `Output/Installer`
-remain the older 0.1 artifacts; they do not install 0.2.
+Download the root `Install Github Classic.sit` installer archive or the bare
+`Output/GitHubClassic-0.2.sit` application archive. Both install the 0.2 app
+with its compatible login helper. The updated VISE project and artwork are
+included in `SRC/Installer`; the built installer is in `Output/Installer`.
 
 Known limits include buffered fetch/clone, full-history local verification,
 uncompressed nondelta outgoing objects, retained checkout backups, no object
