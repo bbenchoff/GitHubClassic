@@ -1,16 +1,17 @@
 # Classic Github
 
-A native GitHub client for the Classic Mac OS. It runs on System 7.5.3 through
-Mac OS 9.2.2, on 68K and PowerPC, and speaks TLS 1.2 and Git's wire protocol
-with no modern computer anywhere in the middle.
+A native GitHub client for Classic Mac OS, built for 68K and PowerPC with
+System 7.5.3 through Mac OS 9.2.2 as compatibility targets. HTTPS and Git
+operations run on the Macintosh itself. Release testing uses Mac OS 9.2.2
+in QEMU; physical-machine qualification remains open.
 
 <p align="center">
   <img src="docs/GitHubClassic.png" alt="The main Classic Github window: repository toolbar, Changes and History panes" width="651">
 </p>
 
-This repository was pushed to GitHub by the application it contains, running
-on a classic Macintosh. That is most of the proof that it works. The full
-story — why, and the four or five problems in the way — is in the writeup:
+This repository is published with the application it contains, built with
+CodeWarrior Pro 4 and run in QEMU. Reproducible checks and build instructions
+are in [Maintenance](docs/MAINTENANCE.md). The full story is in the writeup:
 **[Classic GitHub: A GitHub client for the Classic Macintosh OS](https://bbenchoff.com/pages/MacGitHub.html)**.
 
 ## What it does
@@ -61,7 +62,14 @@ applications keep their resource forks under `.ghclient-mac`.
 
 **Clone this repository with Classic Github to get working Macintosh files.**
 A normal `git clone` on a modern machine gives you readable sources but does
-not reconstruct the forks.
+not reconstruct the forks. Modern contributors should use the
+[companion maintenance tool](docs/MAINTENANCE.md#modern-host-file-renames-and-deletions)
+when renaming or deleting files.
+
+The native local `.git` directory uses an HFS-compatible layout specific to
+Classic Github. Command-line Git cannot open that local store directly;
+interoperability is through Git objects and the wire protocol. See
+[Architecture and formats](docs/ARCHITECTURE.md).
 
 <p align="center">
   <img src="docs/UnstagedChanges.png" alt="Unstaged changes view reporting data fork, resource fork, and Finder attribute changes" width="651">
@@ -69,11 +77,14 @@ not reconstruct the forks.
 
 ## Install
 
-[Download the installer](Install%20Github%20Classic.sit) (StuffIt archive of
-an Installer VISE installer), or the bare
-[application archive](Output/GitHubClassic-0.1.sit). Get it onto your
+[Download version 0.2](Output/GitHubClassic-0.2.sit), a StuffIt archive of
+the application, helper and instructions. Get it onto your
 Macintosh and expand it there. Keep **Classic Github** and **GHClient Login
 Helper** in the same folder.
+
+The root installer archive and `Output/Installer` still contain the older
+0.1 release. The updated 0.2 VISE project is included in `SRC/Installer`, but
+requires a licensed builder before a new installer can be distributed.
 
 <p align="center">
   <img src="docs/Installer1.png" alt="Installer VISE splash screen: Your code. Your Macintosh." width="540">
@@ -88,7 +99,8 @@ First launch:
    different keys and vary your direction and pace. Allow at least 30
    seconds; Continue stays disabled until enough varied activity has been
    collected. This seeds the random state for TLS.
-3. Click **Continue**, then choose and confirm a local vault passphrase. This
+3. Click **Continue**, then choose and confirm a local vault passphrase of at least
+   12 characters. This
    protects the network state and any saved login, and is separate from your
    GitHub password. Creating or unlocking the vault can take a while on a
    68K machine.
@@ -126,7 +138,18 @@ PICT artwork, an editable artwork resource file, and the native Read Me.
 Refresh its sources from the current `Output` and `SRC` folders before
 building; the built installer lands in `Output/Installer`.
 
-## Version 0.1 scope and limits
+## Version 0.2
+
+TLS Finished errors now stop the handshake; new commit metadata uses UTF-8;
+new plain-file Finder defaults avoid Mac OS 9 extension-mapping conflicts;
+and new vault/passphrase operations enforce the same minimum length. Routine
+fast-forward pushes omit verified history already held by the remote branch.
+
+The release also includes portable regression tests, generated-header inputs,
+modern companion-file maintenance tools and disposable native merge fixtures.
+See [release notes](docs/RELEASES.md) and [maintenance](docs/MAINTENANCE.md).
+
+## Scope and limits
 
 Tested in QEMU with Mac OS 9.2.2; physical 68040 and System 7.5.3 testing
 remains open. Designed for 640×480, with monochrome cues and color on capable
@@ -134,8 +157,12 @@ displays. Anything slower than a fast Quadra is not a good time.
 
 - History is first-parent, staging is whole-file, and rebase is linear.
 - Transfers select one branch; submodule checkout is not supported.
+- Rename detection uses exact content; merges with multiple best common
+  ancestors are refused.
 - Push prepares its pack on disk and uploads in 16 KiB chunks, with limits of
   128 MiB per outgoing pack and 256 MiB of history read while preparing.
+  First pushes and force-with-lease pushes still send complete history;
+  outgoing objects use uncompressed stored DEFLATE blocks.
 - Fetch and Clone responses are buffered, with a 64 MiB body limit, a 64 MiB
   expanded-pack limit, and a 2 MiB per-object limit.
 - The application requests 192 MiB preferred memory (8 MiB minimum); larger
@@ -143,6 +170,10 @@ displays. Anything slower than a fast Quadra is not a good time.
   settings in Finder Get Info.
 - Active downloads have a ten-minute total allowance and show bytes received;
   stalled TLS I/O times out after two minutes without progress.
+
+Completed checkout backups and loose objects are retained. There is no
+repacking or garbage collection in 0.2; see the space-reclamation guidance
+in [Maintenance](docs/MAINTENANCE.md#space-and-performance).
 
 ## Security notes
 
@@ -161,6 +192,12 @@ private access is an explicit option. Advanced token sign-in uses the
 permissions of the token its user supplies — a token restricted to another
 repository cannot grant access to this one. Keep personal access tokens and
 client secrets out of source and release files.
+
+Existing vaults remain readable. If an older vault uses fewer than 12
+characters, use **Change Local Passphrase** before manually saving new
+credentials. Classic Mac OS does not isolate unlocked helper/app memory
+from other local software. The bundled TLS port remains Mbed TLS 2.28.9
+with local fixes; this release is not a complete security audit.
 
 ## License
 

@@ -1,0 +1,23 @@
+{
+  "origin": "Extracted unchanged from SRC/TrustRoots.h at 3f00467c1fe445c6a797783ba5a8c6d045b702b8. Updates require independent certificate review.",
+  "certificates": [
+    {
+      "file": "sectigo-r46.pem",
+      "sha256_der": "7bb647a62aeeac88bf257aa522d01ffea395e0ab45c73f93f65654ec38f25a06",
+      "subject": "CN=Sectigo Public Server Authentication Root R46,O=Sectigo Limited,C=GB",
+      "not_after": "2046-03-21T23:59:59+00:00"
+    },
+    {
+      "file": "sectigo-e46.pem",
+      "sha256_der": "c90f26f0fb1b4018b22227519b5ca2b53e2ca5b3be5cf18efe1bef47380c5383",
+      "subject": "CN=Sectigo Public Server Authentication Root E46,O=Sectigo Limited,C=GB",
+      "not_after": "2046-03-21T23:59:59+00:00"
+    },
+    {
+      "file": "usertrust-ecc.pem",
+      "sha256_der": "4ff460d54b9c86dabfbcfc5712e0400d2bed3fbc4d4fbdaa86e06adcd2a9ad7a",
+      "subject": "CN=USERTrust ECC Certification Authority,O=The USERTRUST Network,L=Jersey City,ST=New Jersey,C=US",
+      "not_after": "2038-01-18T23:59:59+00:00"
+    }
+  ]
+}

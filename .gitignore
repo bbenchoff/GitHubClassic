@@ -10,3 +10,7 @@ SSL Seed
 GHClient Log
 TLS Probe.txt
 Auth Probe.txt
+__pycache__/
+*.pyc
+/merge-test*.hfs
+/merge-test*.json
