@@ -1,0 +1,17 @@
+{
+  "origin": "Let's Encrypt ISRG roots, taken unchanged from the Mozilla bundle in certifi 2025.01.31 and matched by SHA-256 on 2026-11-11 to the self-signed roots served at letsencrypt.org/certs. Used only for Git servers other than github.com. Updates require independent certificate review.",
+  "certificates": [
+    {
+      "file": "isrg-root-x1.pem",
+      "sha256_der": "96bcec06264976f37460779acf28c5a7cfe8a3c0aae11a8ffcee05c0bddf08c6",
+      "subject": "CN=ISRG Root X1,O=Internet Security Research Group,C=US",
+      "not_after": "2035-06-04T11:04:38+00:00"
+    },
+    {
+      "file": "isrg-root-x2.pem",
+      "sha256_der": "69729b8e15a86efc177a57afb7171dfc64add28c2fca8cf1507e34453ccb1470",
+      "subject": "CN=ISRG Root X2,O=Internet Security Research Group,C=US",
+      "not_after": "2040-09-17T16:00:00+00:00"
+    }
+  ]
+}

@@ -12,6 +12,7 @@ through Apple Events; it is not a network proxy.
 | Application and Toolbox event loop | `Main.c`, `GHWindowUI.c`, `GHDialogUI.c`, `MenuCommands.h` |
 | Objects, trees, references and indexes | `GitBytes.c`, `GitStore.c`, `GitIndex.c`, `GitHistory.c` |
 | Reachability, fetch and push | `GitGraph.c`, `GitSmart.c`, `GitPack.c`, `GitPush.c`, `GitNetworkUI.c` |
+| Server addresses and records | `GitServer.c` |
 | Logical files and HFS names | `GitRestore.c`, `GitPathMap.c`, `GitWorkMac.c` |
 | Checkout planning and publication | `GitCheckoutPlan.c`, `GitCheckout.c`, `GitCheckoutSession.c`, `GitCheckoutMac.c` |
 | Merge and saved workflows | `GitTextMerge.c`, `GitFileMerge.c`, `GitTreeMerge.c`, `GitMerge*.c`, `GitRebase*.c`, `GitStash*.c`, `GitWorkspace*.c` |
@@ -114,6 +115,40 @@ shared boundaries. The same object/read budget covers shared and new history.
 An unavailable base falls back to a full verified walk; corrupt data, I/O
 errors and cancellation do not become permission to omit objects. New remote
 branches and force-with-lease pushes retain full-pack behavior.
+
+## Servers other than github.com
+
+A repository cloned with Clone from Server has `.git/ghclient-server`:
+
+```
+GHServer1
+http | https
+host (lower case)
+port
+path before owner/name, or empty
+1 if ".git" follows the name, else 0
+user name, or empty
+```
+
+Each field ends with LF. Only this canonical encoding is accepted; a
+damaged record blocks network operations for that repository and never
+falls back to another host. A record naming github.com is refused. Without
+a record the repository is a GitHub repository. The origin, upstream, clone
+and pending-push records keep their `owner/name` form: the last two path
+parts of the address. A pending push for another server carries the fixed
+account binding `1` in place of a GitHub account ID.
+
+`GitServer.c` is portable and has no I/O. `NetServiceHTTPSource` builds every
+smart HTTP request from the current server: path, Host header, credentials
+and connection. Opening a repository loads its record; changing servers
+drops any kept connection and the remembered password. A clone pins its own
+server for its duration, then the open repository's server returns.
+
+Plain HTTP uses a second `SSLState` in plain mode: the same Open Transport
+endpoint, timeouts and cancellation, with no Mbed TLS context and no seed.
+For HTTPS, `SSL_ServerProfile(1)` selects the server trust chain and cipher
+list for one handshake and the GitHub profile is restored immediately after.
+Only GitHub's verified connection is kept for reuse.
 
 ## Text and credentials
 

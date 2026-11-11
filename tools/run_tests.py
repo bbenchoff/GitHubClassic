@@ -76,6 +76,10 @@ def main():
         native = bytes([9, 13, *range(32, 127), *range(128, 256)])
         expected = native.decode("mac_roman").replace("\r", "\n").encode("utf-8")
         subprocess.run([str(executable), expected.hex()], check=True, env=env)
+        executable = Path(temporary) / ("server_address.exe" if os.name == "nt" else "server_address")
+        subprocess.run([compiler, *flags, str(ROOT / "tests/server_address.c"),
+                        "-Wl,--gc-sections", "-o", str(executable)], check=True, env=env)
+        subprocess.run([str(executable)], check=True, env=env)
         executable = Path(temporary) / ("vault_policy.exe" if os.name == "nt" else "vault_policy")
         vault_sources = [ROOT / "tests/vault_policy.c", *sources[1:]]
         vault_sources += [ROOT / "SRC/PolarSSL" / (name + ".c")

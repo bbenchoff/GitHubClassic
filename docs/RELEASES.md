@@ -1,5 +1,38 @@
 # Releases
 
+## 0.3
+
+* Clone from Server: clone, fetch, pull and push against a Git server other
+  than github.com, by `http://` or `https://` address. The server is stored
+  with the repository in a new `ghclient-server` record; repositories without
+  one are GitHub repositories exactly as before.
+* Plain `http://` uses neither the vault nor the TLS seed. `https://` to other
+  servers offers ECDHE-ECDSA as well as ECDHE-RSA with AES-128-GCM, and
+  verifies against the built-in roots, ISRG Root X1/X2 and an optional
+  imported certificate file. github.com keeps its pinned roots and RSA-only
+  profile; the wider set is selected per connection and never for GitHub.
+* Server sign-in by user name and password after a 401, held in memory only.
+  A refused password is forgotten. A request is retried with new credentials
+  only while reading the branch advertisement; a POST is never replayed.
+* Help > Trust Server Certificate imports a PEM or DER certificate.
+* Failures name their cause: untrusted issuer, wrong name, expired or
+  not-yet-valid certificate, refused sign-in, missing repository, redirect.
+* The ignore-file editor finds File > Close by command, not by position; it
+  had been retitling a separator since Open GitHub Repository was added.
+* New portable test `tests/server_address.c` (176 checks) for addresses,
+  stored server records and request paths.
+
+The vault format, helper protocol, GitHub transport and existing repository
+records are unchanged. A 0.2 application opening a server clone made by 0.3
+ignores the server record and would address github.com; use 0.3 for those.
+
+Download `Output/GitHubClassic-0.3.sit`. The root installer archive and
+`Output/Installer` still install 0.2; they were not rebuilt for this release.
+
+Known limits for other servers: smart HTTP only, no SSH or `git://`, no
+redirects, no saved passwords, one new connection per request, and IP-address
+certificates must use the common name. All earlier limits still apply.
+
 ## 0.2
 
 * Abort a TLS handshake when Finished hash/PRF calculation fails. Propagate

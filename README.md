@@ -33,6 +33,10 @@ are in [Maintenance](docs/MAINTENANCE.md). The full story is in the writeup:
   into the application.
 - Fork-aware everything: commits, diffs, and status understand HFS resource
   forks and Finder metadata, not just the data fork.
+- Not only GitHub: **File > Clone from Server** takes the `http://` or
+  `https://` address of a repository on your own Git server or another Git
+  host. Fetch, Pull and Push then follow that server. See
+  [Other Git servers](#other-git-servers).
 
 <p align="center">
   <img src="docs/SignInToGithub3.png" alt="Device Flow sign-in dialog showing the code to enter at github.com/login/device" width="503">
@@ -77,10 +81,13 @@ interoperability is through Git objects and the wire protocol. See
 
 ## Install
 
-[Download the version 0.2 installer](Install%20Github%20Classic.sit), or the bare
-[application archive](Output/GitHubClassic-0.2.sit). Get it onto your
-Macintosh and expand it there. Keep **Classic Github** and **GHClient Login
-Helper** in the same folder.
+[Download version 0.3](Output/GitHubClassic-0.3.sit), a StuffIt archive of the
+application, its login helper and instructions. Get it onto your Macintosh
+and expand it there. Keep **Classic Github** and **GHClient Login Helper** in
+the same folder.
+
+The [installer](Install%20Github%20Classic.sit) still installs version 0.2. It
+has not been rebuilt for 0.3; use the archive above for the current version.
 
 <p align="center">
   <img src="docs/Installer1.png" alt="Installer VISE splash screen: Your code. Your Macintosh." width="540">
@@ -110,6 +117,45 @@ return to Secure Networking Setup at any time; an existing setup does not
 require collecting input again, though a locked vault may ask for its
 passphrase.
 
+## Other Git servers
+
+**File > Clone from Server...** asks for an address:
+
+```
+http://server:3000/owner/project.git
+https://git.example.org/team/app.git
+```
+
+The address needs `http://` or `https://`, a host name or address, an
+optional port, and a path ending in two parts. `.git` is sent only if you
+type it. The server is saved with the clone, so Fetch, Pull and Push use it
+from then on. This is Git's smart HTTP protocol; SSH and `git://` are not
+supported, and redirects are not followed.
+
+- **Sign-in.** If the server answers 401, Classic Github asks for a user
+  name and password and sends them as HTTP Basic. They are kept in memory
+  until you close the repository or quit, and are never written to disk.
+  Do not put a password in the address; a user name (`http://me@server/...`)
+  is fine. GitHub sign-in is not used and is not needed.
+- **`http://`** needs no secure-networking setup and no vault passphrase,
+  which also makes it the fastest path on a slow Macintosh. Nothing is
+  encrypted and the server is not verified. Use it on a network you trust.
+- **`https://`** uses the same TLS 1.2 setup as GitHub, and accepts RSA or
+  ECDSA server certificates. Besides the roots built in for GitHub, other
+  servers are checked against Let's Encrypt's ISRG Root X1 and X2. For a
+  private certificate authority or a self-signed server, choose
+  **Help > Trust Server Certificate...** and pick its certificate (PEM or
+  DER). That file becomes `Classic Github Certificates` in the Preferences
+  folder; delete it to stop trusting it. Imported certificates and the ISRG
+  roots are never used for github.com.
+- A certificate must name the host in the address. Mbed TLS 2.28 does not
+  match IP-address alternative names: for a server reached by IP address,
+  issue a certificate whose common name is that address and that has no
+  subjectAltName, or give the server a host name.
+- The commit author is set per repository in **Repository > Repository
+  Settings...**. The GitHub address and pull-request commands apply to
+  github.com repositories only.
+
 For managed provisioning, Import Setup File accepts a fresh 64-byte
 `.ghsetup` file; `SRC/Create Network Setup.html` is an optional offline
 generator for modern computers. Generate a separate file for each Macintosh
@@ -134,15 +180,11 @@ PICT artwork, an editable artwork resource file, and the native Read Me.
 Refresh its sources from the current `Output` and `SRC` folders before
 building; the built installer lands in `Output/Installer`.
 
-## Version 0.2
+## Version 0.3
 
-TLS Finished errors now stop the handshake; new commit metadata uses UTF-8;
-new plain-file Finder defaults avoid Mac OS 9 extension-mapping conflicts;
-and new vault/passphrase operations enforce the same minimum length. Routine
-fast-forward pushes omit verified history already held by the remote branch.
-
-The release also includes portable regression tests, generated-header inputs,
-modern companion-file maintenance tools and disposable native merge fixtures.
+Git servers other than github.com, over `http://` or `https://`, with
+user name and password sign-in and an importable server certificate. The
+ignore-file editor now retitles File > Close instead of a separator.
 See [release notes](docs/RELEASES.md) and [maintenance](docs/MAINTENANCE.md).
 
 ## Scope and limits
@@ -166,9 +208,11 @@ displays. Anything slower than a fast Quadra is not a good time.
   settings in Finder Get Info.
 - Active downloads have a ten-minute total allowance and show bytes received;
   stalled TLS I/O times out after two minutes without progress.
+- Other Git servers: smart HTTP only, one address per repository, set when
+  cloning. Each request opens a new connection. Passwords are not saved.
 
 Completed checkout backups and loose objects are retained. There is no
-repacking or garbage collection in 0.2; see the space-reclamation guidance
+repacking or garbage collection in 0.3; see the space-reclamation guidance
 in [Maintenance](docs/MAINTENANCE.md#space-and-performance).
 
 ## Security notes
@@ -188,6 +232,13 @@ private access is an explicit option. Advanced token sign-in uses the
 permissions of the token its user supplies — a token restricted to another
 repository cannot grant access to this one. Keep personal access tokens and
 client secrets out of source and release files.
+
+Other Git servers are your decision to trust. `http://` sends repository
+contents and any password in the clear. A certificate you import is trusted
+for every `https://` server you add by address, so import a server's own
+certificate or a private authority's, not a file of unknown origin. Server
+passwords exist only in application memory, which Classic Mac OS does not
+protect from other software.
 
 Existing vaults remain readable. If an older vault uses fewer than 12
 characters, use **Change Local Passphrase** before manually saving new
