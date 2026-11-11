@@ -81,13 +81,10 @@ interoperability is through Git objects and the wire protocol. See
 
 ## Install
 
-[Download version 0.3](Output/GitHubClassic-0.3.sit), a StuffIt archive of the
-application, its login helper and instructions. Get it onto your Macintosh
-and expand it there. Keep **Classic Github** and **GHClient Login Helper** in
-the same folder.
-
-The [installer](Install%20Github%20Classic.sit) still installs version 0.2. It
-has not been rebuilt for 0.3; use the archive above for the current version.
+[Download the version 0.3 installer](Install%20Github%20Classic.sit), or the bare
+[application archive](Output/GitHubClassic-0.3.sit). Get it onto your
+Macintosh and expand it there. Keep **Classic Github** and **GHClient Login
+Helper** in the same folder.
 
 <p align="center">
   <img src="docs/Installer1.png" alt="Installer VISE splash screen: Your code. Your Macintosh." width="540">

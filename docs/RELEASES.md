@@ -26,8 +26,10 @@ The vault format, helper protocol, GitHub transport and existing repository
 records are unchanged. A 0.2 application opening a server clone made by 0.3
 ignores the server record and would address github.com; use 0.3 for those.
 
-Download `Output/GitHubClassic-0.3.sit`. The root installer archive and
-`Output/Installer` still install 0.2; they were not rebuilt for this release.
+Download the root `Install Github Classic.sit` installer archive or the bare
+`Output/GitHubClassic-0.3.sit` application archive. Both install the 0.3 app
+with its login helper. The installer was rebuilt in a follow-up commit; the
+built installer is in `Output/Installer` and its project in `SRC/Installer`.
 
 Known limits for other servers: smart HTTP only, no SSH or `git://`, no
 redirects, no saved passwords, one new connection per request, and IP-address
